@@ -49,8 +49,6 @@ class Renderer {
   }
 
   public draw(): void {
-
-
     const commandEncoder = this.device.createCommandEncoder();
 
     const renderPassDescriptor: GPURenderPassDescriptor = {
@@ -70,18 +68,26 @@ class Renderer {
 
     // DRAW HERE
 
-    for (let i = 0; i < 20000; i++) {
-      this.spriteRenderer.drawSprite(Content.playerTexture, new Rect(
-        Math.random() * this.canvas.width,
-        Math.random() * this.canvas.height,
-        10, 10));
-    }
-    for (let i = 0; i < 20000; i++) {
-      this.spriteRenderer.drawSprite(Content.ufoRedTexture, new Rect(
-        Math.random() * this.canvas.width,
-        Math.random() * this.canvas.height,
-        10, 10));
-    }
+    // for (let i = 0; i < 20000; i++) {
+    //   this.spriteRenderer.drawSprite(Content.playerTexture, new Rect(
+    //     Math.random() * this.canvas.width,
+    //     Math.random() * this.canvas.height,
+    //     10, 10));
+    // }
+    // for (let i = 0; i < 20000; i++) {
+    //   this.spriteRenderer.drawSprite(Content.ufoRedTexture, new Rect(
+    //     Math.random() * this.canvas.width,
+    //     Math.random() * this.canvas.height,
+    //     10, 10));
+    // }
+
+    const player = Content.sprites["playerShip1_blue.png"];
+
+    this.spriteRenderer.drawSpriteSource(player.texture, player.drawRect, player.sourceRect);
+
+    this.spriteRenderer.drawSpriteSource(Content.uvTexture, new Rect(
+      0, 0, 200, 200
+    ), new Rect(0, 0, Content.uvTexture.width /2, Content.uvTexture.height/2))
 
     this.spriteRenderer.frameEnd();
 
