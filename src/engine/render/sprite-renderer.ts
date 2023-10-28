@@ -1,10 +1,10 @@
 import { vec2 } from "gl-matrix";
-import { BufferUtil } from "./buffer-util";
-import { Camera } from "./camera";
-import { Color } from "./color";
-import { Rect } from "./rect";
+import { BufferUtil } from "../../util/buffer-util";
+import { Camera } from "../camera";
+import { Color } from "../color";
+import { Rect } from "../rect";
 import { SpritePipeline } from "./sprite-pipeline";
-import { Texture } from "./texture";
+import { Texture } from "../texture";
 
 const MAX_NUMBER_OF_SPRITES = 1000;
 const FLOAT_PER_VERTEX = 7;

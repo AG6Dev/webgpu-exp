@@ -1,113 +1,19 @@
-import { vec2 } from "gl-matrix";
-import { Color } from "./color";
-import { Content } from "./content";
-import { Rect } from "./rect";
-import { SpriteRenderer } from "./sprite-renderer";
-
-class Renderer {
-
-  private canvas!: HTMLCanvasElement;
-  private context!: GPUCanvasContext;
-  private device!: GPUDevice;
-
-  private passEncoder!: GPURenderPassEncoder;
-
-  private spriteRenderer!: SpriteRenderer;
+import { Engine } from "./engine/engine";
+import { Player } from "./game/player";
 
 
-  private rot = 0;
+const engine = new Engine();
+engine.initialize().then(() => {
+    const player: Player = new Player(engine.inputHandler);
 
-  constructor() {
 
-  }
-
-  public async initialize(): Promise<void> {
-
-    this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    this.context = this.canvas.getContext("webgpu") as GPUCanvasContext;
-
-    if (!this.context) {
-      console.error("WebGPU not supported");
-      alert("WebGPU not supported");
-      return;
+    engine.onUpdate = (dt: number) => {
+        player.update(dt);
     }
 
-    const adapter = await navigator.gpu.requestAdapter();
-
-    if (!adapter) {
-      console.error("No adapter found");
-      alert("No adapter found");
-      return;
+    engine.onDraw = () => {
+        player.draw(engine.spriteRenderer);
     }
 
-    this.device = await adapter.requestDevice();
-
-    await Content.initialize(this.device);
-
-    this.context.configure({
-      device: this.device,
-      format: navigator.gpu.getPreferredCanvasFormat()
-    });
-
-    this.spriteRenderer = new SpriteRenderer(this.device, this.canvas.width, this.canvas.height);
-    this.spriteRenderer.initialize();
-  }
-
-  public draw(): void {
-    const commandEncoder = this.device.createCommandEncoder();
-
-    const renderPassDescriptor: GPURenderPassDescriptor = {
-      colorAttachments: [
-        {
-          clearValue: { r: 0.8, g: 0.8, b: 0.8, a: 1.0 },
-          loadOp: "clear",
-          storeOp: "store",
-          view: this.context.getCurrentTexture().createView()
-        }
-      ]
-    };
-
-    this.passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
-
-    this.spriteRenderer.framePass(this.passEncoder);
-
-    // DRAW HERE
-
-    // for (let i = 0; i < 20000; i++) {
-    //   this.spriteRenderer.drawSprite(Content.playerTexture, new Rect(
-    //     Math.random() * this.canvas.width,
-    //     Math.random() * this.canvas.height,
-    //     10, 10));
-    // }
-    // for (let i = 0; i < 20000; i++) {
-    //   this.spriteRenderer.drawSprite(Content.ufoRedTexture, new Rect(
-    //     Math.random() * this.canvas.width,
-    //     Math.random() * this.canvas.height,
-    //     10, 10));
-    // }
-
-    const player = Content.sprites["playerShip1_blue.png"];
-
-    // player.drawRect.x += 1;
-    // player.drawRect.y += 1;
-    
-    this.spriteRenderer.drawSpriteSource(player.texture, player.drawRect, player.sourceRect, new Color(1, 1, 1), this.rot, vec2.fromValues(0.5, 0.5));
-
-    this.rot += 0.01;
-
-    this.spriteRenderer.drawSpriteSource(Content.uvTexture, new Rect(
-      0, 0, 200, 200
-    ), new Rect(0, 0, Content.uvTexture.width /2, Content.uvTexture.height/2), new Color(1, 1, 1))
-
-    this.spriteRenderer.frameEnd();
-
-    // END DRAW HERE
-    this.passEncoder.end();
-    this.device.queue.submit([commandEncoder.finish()]);
-
-    window.requestAnimationFrame(() => this.draw());
-  }
-}
-
-const renderer = new Renderer();
-renderer.initialize().then(() => renderer.draw());
+    engine.draw()
+});

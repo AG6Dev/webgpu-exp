@@ -1,4 +1,4 @@
-import { Texture } from "./texture";
+import { Texture } from "../texture";
 import shaderSource from "./shader/shader.wgsl?raw";
 
 export class SpritePipeline
