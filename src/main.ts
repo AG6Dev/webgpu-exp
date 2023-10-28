@@ -1,3 +1,5 @@
+import { vec2 } from "gl-matrix";
+import { Color } from "./color";
 import { Content } from "./content";
 import { Rect } from "./rect";
 import { SpriteRenderer } from "./sprite-renderer";
@@ -11,6 +13,9 @@ class Renderer {
   private passEncoder!: GPURenderPassEncoder;
 
   private spriteRenderer!: SpriteRenderer;
+
+
+  private rot = 0;
 
   constructor() {
 
@@ -83,11 +88,16 @@ class Renderer {
 
     const player = Content.sprites["playerShip1_blue.png"];
 
-    this.spriteRenderer.drawSpriteSource(player.texture, player.drawRect, player.sourceRect);
+    // player.drawRect.x += 1;
+    // player.drawRect.y += 1;
+    
+    this.spriteRenderer.drawSpriteSource(player.texture, player.drawRect, player.sourceRect, new Color(1, 1, 1), this.rot, vec2.fromValues(0.5, 0.5));
+
+    this.rot += 0.01;
 
     this.spriteRenderer.drawSpriteSource(Content.uvTexture, new Rect(
       0, 0, 200, 200
-    ), new Rect(0, 0, Content.uvTexture.width /2, Content.uvTexture.height/2))
+    ), new Rect(0, 0, Content.uvTexture.width /2, Content.uvTexture.height/2), new Color(1, 1, 1))
 
     this.spriteRenderer.frameEnd();
 
@@ -97,9 +107,6 @@ class Renderer {
 
     window.requestAnimationFrame(() => this.draw());
   }
-
-  
-
 }
 
 const renderer = new Renderer();
