@@ -3,20 +3,17 @@ import { SpriteRenderer } from "./render/sprite-renderer";
 import { InputHandler } from "./input";
 
 export class Engine {
-
-  public static GAME_WIDTH = 800;
-  public static GAME_HEIGHT = 600;
-
   private lastTime = 0;
 
   private canvas!: HTMLCanvasElement;
   private context!: GPUCanvasContext;
   private device!: GPUDevice;
-
-  public inputHandler!: InputHandler;
-
   private passEncoder!: GPURenderPassEncoder;
 
+  public gameWidth !: number;
+  public gameHeight!: number;
+
+  public inputHandler!: InputHandler;
   public spriteRenderer!: SpriteRenderer;
 
   public onUpdate: (dt: number) => void = () => { };
@@ -28,6 +25,9 @@ export class Engine {
 
     this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
     this.context = this.canvas.getContext("webgpu") as GPUCanvasContext;
+
+    this.gameHeight = this.canvas.height;
+    this.gameWidth = this.canvas.width;
 
     if (!this.context) {
       console.error("WebGPU not supported");

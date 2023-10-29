@@ -7,7 +7,7 @@ export class InputHandler {
     }
 
     public isKeyDown(key: string): boolean {
-        return this.keysDown[key];
+        return this.keysDown[key] || this.keysDown[key.toLowerCase()];
     }
 
     public isKeyUp(key: string): boolean {

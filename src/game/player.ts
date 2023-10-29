@@ -5,8 +5,6 @@ import { SpriteRenderer } from "../engine/render/sprite-renderer";
 import { Texture } from "../engine/texture";
 import { InputHandler } from "../engine/input";
 
-import { Engine } from "../engine/engine";
-
 const PLAYER_SPEED = 1;
 
 export class Player {
@@ -54,14 +52,14 @@ export class Player {
     public checkAndClampInBounds() {
         if (this.drawRect.x < 0) {
             this.drawRect.x = 0;
-        } else if (this.drawRect.x + this.drawRect.width > Engine.GAME_WIDTH) {
-            this.drawRect.x = Engine.GAME_WIDTH - this.drawRect.width;
+        } else if (this.drawRect.x + this.drawRect.width > 600) {
+            this.drawRect.x = 600 - this.drawRect.width;
         }
 
         if (this.drawRect.y < 0) {
             this.drawRect.y = 0;
-        } else if (this.drawRect.y + this.drawRect.height > Engine.GAME_HEIGHT) {
-            this.drawRect.y = Engine.GAME_HEIGHT - this.drawRect.height;
+        } else if (this.drawRect.y + this.drawRect.height > 900) {
+            this.drawRect.y = 900 - this.drawRect.height;
         }
 
     }
