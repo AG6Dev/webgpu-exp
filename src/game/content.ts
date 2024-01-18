@@ -9,6 +9,7 @@ export class Content
     public static uvTexture: Texture;
     public static spriteSheet: Texture;
     public static backgroundTexture: Texture;
+    public static explosionTexture: Texture;
 
     public static sprites: { [id:string] : Sprite } = {};
 
@@ -19,6 +20,7 @@ export class Content
         this.uvTexture = await Texture.createTextureFromURL(device, "assets/uv_test.png");
         this.spriteSheet = await Texture.createTextureFromURL(device, "assets/Spritesheet/sheet.png");
         this.backgroundTexture = await Texture.createTextureFromURL(device, "assets/Backgrounds/purple.png");
+        this.explosionTexture = await Texture.createTextureFromURL(device, "assets/explosions.png");
     
         await this.loadSpriteSheet();
     }

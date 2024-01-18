@@ -4,6 +4,7 @@ import { SpriteRenderer } from "../engine/render/sprite-renderer";
 import { Texture } from "../engine/texture";
 import { Content } from "./content";
 import { Enemy } from "./enemy";
+import { CircleCollider } from "../circle-collider";
 
 const METEOR_KEYS = [
     "meteorBrown_big1",
@@ -26,6 +27,7 @@ const METEOR_MIN_SPEED = 0.25;
 export class MeteorEnemy implements Enemy {
     public active: boolean = true;
     public drawRect: Rect;
+    public readonly collider: CircleCollider = new CircleCollider();
 
     private texture: Texture;
     private sourceRect: Rect;
@@ -50,6 +52,8 @@ export class MeteorEnemy implements Enemy {
     update(deltaTime: number): void {
         this.drawRect.y += this.speed * deltaTime;
         this.rotation += deltaTime * this.rotationSpeed;
+
+        this.collider.update(this.drawRect);
     }
 
     draw(spriteRenderer: SpriteRenderer): void {

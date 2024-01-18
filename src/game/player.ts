@@ -4,6 +4,7 @@ import { Rect } from "../engine/rect";
 import { SpriteRenderer } from "../engine/render/sprite-renderer";
 import { Texture } from "../engine/texture";
 import { InputHandler } from "../engine/input";
+import { CircleCollider } from "../circle-collider";
 
 const PLAYER_SPEED = 1;
 
@@ -12,6 +13,8 @@ export class Player {
     private drawRect: Rect;
     private sourceRect: Rect;
     private texture: Texture;
+
+    public readonly collider: CircleCollider = new CircleCollider();
 
     constructor(private inputManager: InputHandler) {
         const playerSprite = Content.sprites["playerShip1_blue"];
@@ -43,6 +46,7 @@ export class Player {
         this.drawRect.y += this.movementVec[1] * PLAYER_SPEED * deltaTime;
 
         this.checkAndClampInBounds();
+        this.collider.update(this.drawRect);
     }
 
     public draw(spriteRenderer: SpriteRenderer): void {

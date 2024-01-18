@@ -8,7 +8,7 @@ const engine = new Engine();
 engine.initialize().then(() => {
     const background: Background = new Background(engine.gameWidth, engine.gameHeight);
     const player: Player = new Player(engine.inputHandler);
-    const enemyManager: EnemyManager = new EnemyManager(engine.gameWidth, engine.gameHeight);
+    const enemyManager: EnemyManager = new EnemyManager(engine.gameWidth, engine.gameHeight, player);
 
 
     engine.onUpdate = (dt: number) => {
